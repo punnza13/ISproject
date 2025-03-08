@@ -1,0 +1,29 @@
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+
+# แบ่งข้อมูลเป็น Features (X) และ Target (y)
+X = data.drop(columns=[target_column])
+y = data[target_column]
+
+# แบ่งข้อมูลเป็นชุดฝึกและชุดทดสอบ
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# ปรับขนาดข้อมูล (Normalization)
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# สร้างโมเดล Neural Network
+model = MLPClassifier(hidden_layer_sizes=(64, 32), max_iter=500, random_state=42)
+
+# ฝึกโมเดลด้วยชุดฝึก
+model.fit(X_train, y_train)
+
+# ทำนายผลจากชุดทดสอบ
+y_pred = model.predict(X_test)
+
+# ประเมินโมเดล
+from sklearn.metrics import accuracy_score
+accuracy = accuracy_score(y_test, y_pred)
+print(f"ความแม่นยำของโมเดล: {accuracy:.2f}")
